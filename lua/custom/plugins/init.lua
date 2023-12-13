@@ -16,4 +16,7 @@ return {
   require "custom.plugins.neogit",
   require "custom.plugins.comment",
   require "custom.plugins.batter-line",
+  require "custom.plugins.zenmode",
+  require "custom.plugins.startupscreen",
+  require "custom.plugins.vimbegood",
 }
