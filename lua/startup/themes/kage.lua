@@ -30,8 +30,8 @@ local settings = {
 "               ⠄⠄⠭⢛⠄⠠⢤⣈⣾⡞⠄⠄⢰⠉⠄⠄⠠                  ",
 "                   ⠈⠉⠉⠉⠉⠉⠛⠄⠄⠄⠈                    ",
     },
-        default_color = "#FF0000",
-        highlight = "Error",
+        default_color = "",
+        highlight = "Number",
         oldfiles_amount = 0,
     },
     -- name which will be displayed and command

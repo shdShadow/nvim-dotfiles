@@ -129,9 +129,9 @@ require('lazy').setup({
   {
     --{ 'rose-pine/neovim', name = 'rose-pine' },
   },
-  --CATPPUCCIN
+  --GRUVBOX
   {
-    { "catppuccin/nvim", name = "catppuccin", priority = 1000 }
+    { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
   },
   --TRANSPARENCY
   {
@@ -761,7 +761,7 @@ vim.cmd([[
   autocmd FileType make set noexpandtab
 ]])
 
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "gruvbox"
 --vim.cmd('autocmd BufWinLeave * mkview')
 --vim.cmd('autocmd BufWinEnter * silent loadview')
 vim.api.nvim_create_autocmd({"BufWinLeave"}, {

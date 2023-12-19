@@ -4,17 +4,17 @@
 local lualine = require 'lualine'
 -- Color table for highlights
 local colors = {
-  bg = '#202328',
-  fg = '#bbc2cf',
-  yellow = '#ECBE7B',
-  cyan = '#008080',
-  darkblue = '#081633',
-  green = '#98be65',
-  orange = '#FF8800',
-  violet = '#a9a1e1',
-  magenta = '#c678dd',
-  blue = '#51afef',
-  red = '#ec5f67',
+  bg = '#494643',
+  fg = '#ebdbb2',
+  yellow = '#d79921',
+  cyan = '#076678',
+  darkblue = '#0c0c7d',
+  green = '#98971a',
+  orange = '#d65d0e',
+  violet = '#8f3f71',
+  magenta = '#8f3f71',
+  blue = '#458588',
+  red = '#cc241d',
 }
 local nvimbattery = {
   function()
