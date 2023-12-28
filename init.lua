@@ -175,19 +175,6 @@ require('lazy').setup({
   {
     "stsewd/spotify.nvim",
   },
-  --GPT
-  {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup()
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
   --Discord rich presence
   {
     'andweeb/presence.nvim',
@@ -693,6 +680,9 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+  sources = {
+    name = 'path',
+  },
   formatting = {
     format = function(entry, vim_item)
       -- Kind icons

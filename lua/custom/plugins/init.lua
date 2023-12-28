@@ -19,4 +19,5 @@ return {
   require "custom.plugins.zenmode",
   require "custom.plugins.startupscreen",
   require "custom.plugins.vimbegood",
+  require "custom.plugins.pomo",
 }

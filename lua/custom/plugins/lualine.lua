@@ -48,7 +48,19 @@ local config = {
   sections = {
     -- these are to remove the defaults
     lualine_a = {},
-    lualine_b = {},
+    lualine_b = {function()
+        local ok, pomo = pcall(require, "pomo")
+        if not ok then
+          return ""
+        end
+
+        local timer = pomo.get_first_to_finish()
+        if timer == nil then
+          return ""
+        end
+
+        return "󰄉 " .. tostring(timer)
+      end,},
     lualine_y = {},
     lualine_z = {},
     -- These will be filled later
