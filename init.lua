@@ -131,7 +131,15 @@ require('lazy').setup({
   },
   --GRUVBOX
   {
-    { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
+    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
+  },
+  --VSCODE THEME
+  {
+    "askfiy/visual_studio_code",
+    priority = 100,
+    config = function()
+      vim.cmd([[colorscheme visual_studio_code]])
+    end,
   },
   --TRANSPARENCY
   {
@@ -164,18 +172,6 @@ require('lazy').setup({
       require('cinnamon').setup()
     end,
   },
-  --SIGNATURE HELP
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
-    opts = {},
-    config = function(_, opts) require 'lsp_signature'.setup(opts) end
-  },
-  --SPOTIFY
-  {
-    "stsewd/spotify.nvim",
-  },
-  --Discord rich presence
   {
     'andweeb/presence.nvim',
   },
@@ -183,10 +179,44 @@ require('lazy').setup({
   {
     "github/copilot.vim",
   },
+  --RUST-TOOLS
+  {
+    'neovim/nvim-lspconfig',
+    'simrat39/rust-tools.nvim',
+
+    'nvim-lua/plenary.nvim',
+    'mfussenegger/nvim-dap',
+  },
+  --HIGHLIGHT COMMENT
+  {
+    "leon-richardt/comment-highlights.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {},
+    cmd = "CHToggle",
+    keys = {
+      {
+        "<leader>cc",
+        function() require("comment-highlights").toggle() end,
+        desc = "Toggle comment highlighting"
+      },
+    },
+  },
   --TMUX
   {
     "christoomey/vim-tmux-navigator",
     lazy = false,
+  },
+  --LATEX
+  {
+    'lervag/vimtex'
+    -- init.lua or init.vim (NeoVim's init file)
+  },
+  --SIGNATURE
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts) require 'lsp_signature'.setup(opts) end
   },
   {
     -- Autocompletion
@@ -203,7 +233,6 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',  opts = {} },
   {
@@ -259,12 +288,12 @@ require('lazy').setup({
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
     --opts = {
-      --options = {
-        --icons_enabled = false,
-        --theme = '',
-        --component_separators = '|',
-        --section_separators = '',
-      --},
+    --options = {
+    --icons_enabled = false,
+    --theme = '',
+    --component_separators = '|',
+    --section_separators = '',
+    --},
     --},
   },
 
@@ -592,6 +621,23 @@ require('which-key').register {
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
+-- IMPORTANT: make sure to setup neodev BEFORE lspconfig
+require("neodev").setup({
+  -- add any options here, or leave empty to use the default settings
+})
+
+-- then setup your lsp server as usual
+local lspconfig = require('lspconfig')
+-- example to setup lua_ls and enable call snippets
+lspconfig.lua_ls.setup({
+  settings = {
+    Lua = {
+      completion = {
+        callSnippet = "Replace"
+      }
+    }
+  }
+})
 require('mason').setup()
 require('mason-lspconfig').setup()
 
@@ -611,7 +657,7 @@ local servers = {
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
-  intelephense = { filetypes = { 'php',}},
+  intelephense = { filetypes = { 'php', } },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -681,13 +727,14 @@ luasnip.config.setup {}
 
 cmp.setup {
   sources = {
-    name = 'path',
+    name = 'nvim_lsp_signature_help',
   },
   formatting = {
     format = function(entry, vim_item)
       -- Kind icons
       vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
       -- Source
+      vim_item.abbr = string.sub(vim_item.abbr, 1, 20)
       return vim_item
     end
   },
@@ -729,8 +776,16 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
   },
+  window = {
+    completion = {
+      border = "rounded",
+      scrollbar = false,
+    },
+    documentation = {
+      border = "rounded",
+    },
+  },
 }
-vim.cmd("colorscheme rose-pine")
 
 --function FormatOnSave()
 --vim.cmd(':Format')
@@ -751,16 +806,16 @@ vim.cmd([[
   autocmd FileType make set noexpandtab
 ]])
 
-vim.cmd.colorscheme "gruvbox"
+--vim.cmd.colorscheme "gruvbox"
 --vim.cmd('autocmd BufWinLeave * mkview')
 --vim.cmd('autocmd BufWinEnter * silent loadview')
-vim.api.nvim_create_autocmd({"BufWinLeave"}, {
-  pattern = {"*.*"},
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+  pattern = { "*.*" },
   desc = "save view (folds), when closing file",
   command = "mkview",
 })
-vim.api.nvim_create_autocmd({"BufWinEnter"}, {
-  pattern = {"*.*"},
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  pattern = { "*.*" },
   desc = "load view (folds), when opening file",
   command = "silent! loadview"
 })
@@ -768,33 +823,146 @@ vim.opt.smartindent = true
 vim.opt.scrolloff = 10
 
 require("presence").setup({
-    -- General options
-    auto_update         = true,                       -- Update activity based on autocmd events (if `false`, map or manually execute `:lua package.loaded.presence:update()`)
-    neovim_image_text   = "The One True Text Editor", -- Text displayed when hovered over the Neovim image
-    main_image          = "neovim",                   -- Main image display (either "neovim" or "file")
-    client_id           = "1125152218073534485",       -- Use your own Discord application client id (not recommended)
-    log_level           = nil,                        -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
-    debounce_timeout    = 10,                         -- Number of seconds to debounce events (or calls to `:lua package.loaded.presence:update(<filename>, true)`)
-    enable_line_number  = false,                      -- Displays the current line number instead of the current project
-    blacklist           = {},                         -- A list of strings or Lua patterns that disable Rich Presence if the current file name, path, or workspace matches
-    buttons             = true,                       -- Configure Rich Presence button(s), either a boolean to enable/disable, a static table (`{{ label = "<label>", url = "<url>" }, ...}`, or a function(buffer: string, repo_url: string|nil): table)
-    file_assets         = {},                         -- Custom file asset definitions keyed by file names and extensions (see default config at `lua/presence/file_assets.lua` for reference)
-    show_time           = true,                       -- Show the timer
+  -- General options
+  auto_update         = true,                         -- Update activity based on autocmd events (if `false`, map or manually execute `:lua package.loaded.presence:update()`)
+  neovim_image_text   = "The One True Text Editor",   -- Text displayed when hovered over the Neovim image
+  main_image          = "neovim",                     -- Main image display (either "neovim" or "file")
+  client_id           = "1125152218073534485",        -- Use your own Discord application client id (not recommended)
+  log_level           = nil,                          -- Log messages at or above this level (one of the following: "debug", "info", "warn", "error")
+  debounce_timeout    = 10,                           -- Number of seconds to debounce events (or calls to `:lua package.loaded.presence:update(<filename>, true)`)
+  enable_line_number  = false,                        -- Displays the current line number instead of the current project
+  blacklist           = {},                           -- A list of strings or Lua patterns that disable Rich Presence if the current file name, path, or workspace matches
+  buttons             = true,                         -- Configure Rich Presence button(s), either a boolean to enable/disable, a static table (`{{ label = "<label>", url = "<url>" }, ...}`, or a function(buffer: string, repo_url: string|nil): table)
+  file_assets         = {},                           -- Custom file asset definitions keyed by file names and extensions (see default config at `lua/presence/file_assets.lua` for reference)
+  show_time           = true,                         -- Show the timer
 
-    -- Rich Presence text options
-    editing_text        = "Editing %s",               -- Format string rendered when an editable file is loaded in the buffer (either string or function(filename: string): string)
-    file_explorer_text  = "Browsing %s",              -- Format string rendered when browsing a file explorer (either string or function(file_explorer_name: string): string)
-    git_commit_text     = "Committing changes",       -- Format string rendered when committing changes in git (either string or function(filename: string): string)
-    plugin_manager_text = "Managing plugins",         -- Format string rendered when managing plugins (either string or function(plugin_manager_name: string): string)
-    reading_text        = "Reading %s",               -- Format string rendered when a read-only or unmodifiable file is loaded in the buffer (either string or function(filename: string): string)
-    workspace_text      = "Working on %s",            -- Format string rendered when in a git repository (either string or function(project_name: string|nil, filename: string): string)
-    line_number_text    = "Line %s out of %s",        -- Format string rendered when `enable_line_number` is set to true (either string or function(line_number: number, line_count: number): string)
+  -- Rich Presence text options
+  editing_text        = "Editing %s",           -- Format string rendered when an editable file is loaded in the buffer (either string or function(filename: string): string)
+  file_explorer_text  = "Browsing %s",          -- Format string rendered when browsing a file explorer (either string or function(file_explorer_name: string): string)
+  git_commit_text     = "Committing changes",   -- Format string rendered when committing changes in git (either string or function(filename: string): string)
+  plugin_manager_text = "Managing plugins",     -- Format string rendered when managing plugins (either string or function(plugin_manager_name: string): string)
+  reading_text        = "Reading %s",           -- Format string rendered when a read-only or unmodifiable file is loaded in the buffer (either string or function(filename: string): string)
+  workspace_text      = "Working on %s",        -- Format string rendered when in a git repository (either string or function(project_name: string|nil, filename: string): string)
+  line_number_text    = "Line %s out of %s",    -- Format string rendered when `enable_line_number` is set to true (either string or function(line_number: number, line_count: number): string)
 })
 require('presence'):connect()
 require "battery".setup({})
 vim.opt.pumheight = 10;
+vim.o.pumwidth = 80;
 vim.g.intelephense_setup = {
   intelephense = {
     root_path = vim.fn.expand('%:p:h'),
   },
 }
+
+-- init.lua or init.vim (NeoVim's init file)
+
+-- Enable filetype plugin indent
+vim.cmd('filetype plugin indent on')
+
+-- Enable syntax highlighting
+vim.cmd('syntax enable')
+
+-- Set the viewer options
+vim.g.vimtex_view_method = 'zathura' -- or use 'okular' for a generic interface
+vim.g.vimtex_view_general_viewer = 'okular'
+vim.g.vimtex_view_general_options = '--unique file:@pdf\\#src:@line@tex'
+
+-- Set the compiler method
+vim.g.vimtex_compiler_method = 'latexrun'
+
+-- Set localleader
+vim.g.maplocalleader = ','
+
+-- Configure vimtex-specific settings
+vim.api.nvim_exec([[
+  " Additional vimtex settings can be added here
+]], false)
+
+local rt = require("rust-tools")
+
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+
+
+
+
+cfg = {
+  debug = false,                                              -- set to true to enable debug logging
+  log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
+  -- default is  ~/.cache/nvim/lsp_signature.log
+  verbose = false,                                            -- show debug line number
+
+  bind = true,                                                -- This is mandatory, otherwise border config won't get registered.
+  -- If you want to hook lspsaga or other signature handler, pls set to false
+  doc_lines = 100,                                            -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
+  -- set to 0 if you DO NOT want any API comments be shown
+  -- This setting only take effect in insert mode, it does not affect signature help in normal
+  -- mode, 10 by default
+
+  max_height = 16,                       -- max height of signature floating_window
+  max_width = 80,                        -- max_width of signature floating_window, line will be wrapped if exceed max_width
+  -- the value need >= 40
+  wrap = true,                           -- allow doc/signature text wrap inside floating_window, useful if your lsp return doc/sig is too long
+  floating_window = true,                -- show hint in a floating window, set to false for virtual text only mode
+
+  floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
+  -- will set to true when fully tested, set to false will use whichever side has more space
+  -- this setting will be helpful if you do not want the PUM and floating win overlap
+
+  floating_window_off_x = 1, -- adjust float windows x position.
+  -- can be either a number or function
+  floating_window_off_y = 0, -- adjust float windows y position. e.g -2 move window up 2 lines; 2 move down 2 lines
+  -- can be either number or function, see examples
+
+  close_timeout = 4000, -- close floating window after ms when laster parameter is entered
+  fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
+  hint_enable = true, -- virtual hint enable
+  hint_prefix = "🐼 ", -- Panda for parameter, NOTE: for the terminal not support emoji, might crash
+  hint_scheme = "String",
+  hint_inline = function() return false end, -- should the hint be inline(nvim 0.10 only)?  default false
+  -- return true | 'inline' to show hint inline, return 'eol' to show hint at end of line, return false to disable
+  -- return 'right_align' to display hint right aligned in the current line
+  hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
+  handler_opts = {
+    border = "rounded"                          -- double, rounded, single, shadow, none, or a table of borders
+  },
+
+  always_trigger = false,                  -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
+
+  auto_close_after = nil,                  -- autoclose signature float win after x sec, disabled if nil.
+  extra_trigger_chars = {},                -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+  zindex = 200,                            -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
+
+  padding = '',                            -- character to pad on left and right of signature can be ' ', or '|'  etc
+
+  transparency = nil,                      -- disabled by default, allow floating win transparent value 1~100
+  shadow_blend = 36,                       -- if you using shadow as border use this set the opacity
+  shadow_guibg = 'Black',                  -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
+  timer_interval = 200,                    -- default timer check interval set to lower value if you want to reduce latency
+  toggle_key = '<M-x>',                    -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+  toggle_key_flip_floatwin_setting = true, -- true: toggle floating_windows: true|false setting after toggle key pressed
+  -- false: floating_windows setup will not change, toggle_key will pop up signature helper, but signature
+  -- may not popup when typing depends on floating_window setting
+
+  select_signature_key = nil, -- cycle to next signature, e.g. '<M-n>' function overloading
+  move_cursor_key = nil,      -- imap, use nvim_set_current_win to move cursor between current win and floating
+}
+
+-- recommended:
+require 'lsp_signature'.setup(cfg, bufnr)    -- no need to specify bufnr if you don't use toggle_key
+require 'lsp_signature'.on_attach(cfg, bufnr) --
+-- You can also do this inside lsp on_attach
+-- note: on_attach deprecated
+-- You can also do this inside lsp on_attach
+-- note: on_attach deprecated
+--SOMETHING FOR RUST TOOLS
+require('rust-tools').inlay_hints.enable()

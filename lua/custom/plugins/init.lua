@@ -8,7 +8,6 @@ return {
   require "custom.plugins.ntree",
   require "custom.plugins.remap",
   require "custom.plugins.colorscheme",
-  require "custom.plugins.rust-tools",
   require "custom.plugins.barbar",
   require "custom.plugins.term",
   require "custom.plugins.fugitive",
@@ -20,4 +19,6 @@ return {
   require "custom.plugins.startupscreen",
   require "custom.plugins.vimbegood",
   require "custom.plugins.pomo",
+  require "custom.plugins.trouble",
+  require "custom.plugins.lspsaga",
 }
