@@ -1,5 +1,4 @@
 --[[
-
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -141,6 +140,16 @@ require('lazy').setup({
       vim.cmd([[colorscheme visual_studio_code]])
     end,
   },
+  --VIMTEX
+  {
+    "lervag/vimtex",
+    ft = "tex",
+    config = function()
+      vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_compiler_method = 'latexmk'
+    end,
+  },
+
   --TRANSPARENCY
   {
     "xiyaowong/transparent.nvim",
@@ -205,11 +214,6 @@ require('lazy').setup({
   {
     "christoomey/vim-tmux-navigator",
     lazy = false,
-  },
-  --LATEX
-  {
-    'lervag/vimtex'
-    -- init.lua or init.vim (NeoVim's init file)
   },
   --SIGNATURE
   {
@@ -857,27 +861,6 @@ vim.g.intelephense_setup = {
 
 -- init.lua or init.vim (NeoVim's init file)
 
--- Enable filetype plugin indent
-vim.cmd('filetype plugin indent on')
-
--- Enable syntax highlighting
-vim.cmd('syntax enable')
-
--- Set the viewer options
-vim.g.vimtex_view_method = 'zathura' -- or use 'okular' for a generic interface
-vim.g.vimtex_view_general_viewer = 'okular'
-vim.g.vimtex_view_general_options = '--unique file:@pdf\\#src:@line@tex'
-
--- Set the compiler method
-vim.g.vimtex_compiler_method = 'latexrun'
-
--- Set localleader
-vim.g.maplocalleader = ','
-
--- Configure vimtex-specific settings
-vim.api.nvim_exec([[
-  " Additional vimtex settings can be added here
-]], false)
 
 local rt = require("rust-tools")
 
@@ -966,3 +949,10 @@ require 'lsp_signature'.on_attach(cfg, bufnr) --
 -- note: on_attach deprecated
 --SOMETHING FOR RUST TOOLS
 require('rust-tools').inlay_hints.enable()
+
+
+
+--VIMTEX MAYBE
+vim.cmd("filetype plugin on")
+vim.cmd("filetype indent on")
+

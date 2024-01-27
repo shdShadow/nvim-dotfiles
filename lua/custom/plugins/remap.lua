@@ -31,6 +31,10 @@ vim.api.nvim_set_keymap('n', '<A-Left>', ':all vertical resize +2<CR>', { norema
 vim.api.nvim_set_keymap('n', '<A-Right>', ':all vertical resize -2<CR>', { noremap = true, silent = true }),
 
 
+--VIMTEx
+vim.api.nvim_set_keymap('n', '<Leader>ll', ':VimtexCompile<CR>', { noremap = true, silent = true }),
+vim.api.nvim_set_keymap('n', '<Leader>lc', ':VimtexClean<CR>', { noremap = true, silent = true }),
+
 
 
 }
