@@ -21,4 +21,5 @@ return {
   require "custom.plugins.pomo",
   require "custom.plugins.trouble",
   require "custom.plugins.lspsaga",
+  require "custom.plugins.javaconfig"
 }

@@ -128,6 +128,17 @@ require('lazy').setup({
   {
     --{ 'rose-pine/neovim', name = 'rose-pine' },
   },
+  {
+    { "EdenEast/nightfox.nvim" } -- lazy
+  },
+  {
+    'AlexvZyl/nordic.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+        require 'nordic' .load()
+    end
+},
   --GRUVBOX
   {
     { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
@@ -136,9 +147,9 @@ require('lazy').setup({
   {
     "askfiy/visual_studio_code",
     priority = 100,
-    config = function()
-      vim.cmd([[colorscheme visual_studio_code]])
-    end,
+    --config = function()
+      --vim.cmd([[colorscheme visual_studio_code]])
+    --end,
   },
   --VIMTEX
   {
@@ -276,15 +287,6 @@ require('lazy').setup({
         end, { expr = true, buffer = bufnr, desc = 'Jump to previous hunk' })
       end,
     },
-  },
-
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
   },
 
   {
@@ -661,7 +663,7 @@ local servers = {
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
-  intelephense = { filetypes = { 'php', } },
+  intelephense = { filetypes = { 'php', }, tabstop=4 },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -955,4 +957,22 @@ require('rust-tools').inlay_hints.enable()
 --VIMTEX MAYBE
 vim.cmd("filetype plugin on")
 vim.cmd("filetype indent on")
+
+--vim.cmd("colorscheme duskfox")
+
+require('dap').configurations.java = {
+    {
+        type = 'java',
+        request = 'launch',
+        name = 'Debug (Java)',
+        program = "${workspaceFolder}/target/classes",
+        args = {},
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+        console = 'integratedTerminal',
+        internalConsoleOptions = 'neverOpen',
+        sourceMaps = true,
+        outDir = "${workspaceFolder}/target/classes",
+    },
+}
 
