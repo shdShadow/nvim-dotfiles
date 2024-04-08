@@ -976,3 +976,17 @@ require('dap').configurations.java = {
     },
 }
 
+-- Assicurati di aver installato 'luasnip'
+local ls = require('luasnip')
+
+-- Carica tutti i tuoi snippet
+-- Assicurati di aver installato 'luasnip' e 'luasnip/loaders/from_vscode'
+local ls = require('luasnip')
+local lsp = require('luasnip/loaders/from_vscode')
+
+-- Carica gli snippet predefiniti
+lsp.load({ include = { "html" } })
+
+-- Imposta gli snippet HTML per i file PHP
+ls.filetype_extend("php", { "html" })
+
