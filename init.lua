@@ -135,9 +135,9 @@ require('lazy').setup({
     'AlexvZyl/nordic.nvim',
     lazy = false,
     priority = 1000,
-    config = function()
-        require 'nordic' .load()
-    end
+    --config = function()
+        --require 'nordic' .load()
+    --end
 },
   --GRUVBOX
   {
@@ -989,4 +989,4 @@ lsp.load({ include = { "html" } })
 
 -- Imposta gli snippet HTML per i file PHP
 ls.filetype_extend("php", { "html" })
-
+vim.cmd("colorscheme nordic")
