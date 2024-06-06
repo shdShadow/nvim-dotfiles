@@ -5,10 +5,10 @@
 return {
   require "custom.plugins.lualine",
   require "custom.plugins.autopairs",
-  require "custom.plugins.ntree",
+  require "custom.plugins.neotree",
   require "custom.plugins.remap",
   require "custom.plugins.colorscheme",
-  require "custom.plugins.barbar",
+  --require "custom.plugins.barbar",
   require "custom.plugins.term",
   require "custom.plugins.fugitive",
   require "custom.plugins.compiler",
@@ -21,5 +21,5 @@ return {
   require "custom.plugins.pomo",
   require "custom.plugins.trouble",
   require "custom.plugins.lspsaga",
-  require "custom.plugins.javaconfig"
+  require "custom.plugins.outline",
 }

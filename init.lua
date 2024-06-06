@@ -97,7 +97,7 @@ require('lazy').setup({
   {
     "rcarriga/nvim-dap-ui",
     event = "VeryLazy",
-    dependencies = "mfussenegger/nvim-dap",
+    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
@@ -678,6 +678,7 @@ require('neodev').setup()
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities.offsetEncoding = { "utf-16"}
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -960,21 +961,6 @@ vim.cmd("filetype indent on")
 
 --vim.cmd("colorscheme duskfox")
 
-require('dap').configurations.java = {
-    {
-        type = 'java',
-        request = 'launch',
-        name = 'Debug (Java)',
-        program = "${workspaceFolder}/target/classes",
-        args = {},
-        cwd = "${workspaceFolder}",
-        stopOnEntry = false,
-        console = 'integratedTerminal',
-        internalConsoleOptions = 'neverOpen',
-        sourceMaps = true,
-        outDir = "${workspaceFolder}/target/classes",
-    },
-}
 
 -- Assicurati di aver installato 'luasnip'
 local ls = require('luasnip')
@@ -990,3 +976,4 @@ lsp.load({ include = { "html" } })
 -- Imposta gli snippet HTML per i file PHP
 ls.filetype_extend("php", { "html" })
 vim.cmd("colorscheme nordic")
+
