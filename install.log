@@ -1,0 +1,8 @@
+[23:53:45 2024-07-16] FETCHING Version 2.36.15
+[23:53:45 2024-07-16] DOWNLOADING https://github.com/spicetify/cli/releases/download/v2.36.15/spicetify-2.36.15-linux-amd64.tar.gz
+[23:53:46 2024-07-16] EXTRACTING /home/shdshadow/.spicetify/spicetify.tar.gz
+[23:53:46 2024-07-16] SETTING EXECUTABLE PERMISSIONS TO /home/shdshadow/.spicetify/spicetify
+[23:53:46 2024-07-16] REMOVING /home/shdshadow/.spicetify/spicetify.tar.gz
+[23:53:46 2024-07-16] spicetify path already set in /home/shdshadow/.config/fish/config.fish, continuing...
+[23:53:46 2024-07-16] spicetify v2.36.15 was installed successfully to /home/shdshadow/.spicetify
+[23:53:46 2024-07-16] Run 'spicetify --help' to get started
