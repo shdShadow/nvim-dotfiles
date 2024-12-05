@@ -177,10 +177,6 @@ require('lazy').setup({
   {
     { 'akinsho/toggleterm.nvim', version = "*", config = true },
   },
-  --NVIM_JDTLS
-  {
-    "mfussenegger/nvim-jdtls",
-  },
   --COMPILER
   {
     "krady21/compiler-explorer.nvim"
@@ -1054,3 +1050,4 @@ vim.cmd [[highlight LineNr guifg=#FFFFFF]]
     verbose = false,
   },
 }
+

@@ -23,5 +23,7 @@ return {
   require "custom.plugins.lspsaga",
   require "custom.plugins.outline",
   require "custom.plugins.neotab",
-  require "custom.plugins.debug-go"
+  require "custom.plugins.debug-go",
+  require "custom.plugins.vimclosetag",
+  require "custom.plugins.lua-debug"
 }
